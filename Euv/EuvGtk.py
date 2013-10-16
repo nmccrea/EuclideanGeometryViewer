@@ -3,7 +3,6 @@ import gtk
 import cairo
 import pango
 import pangocairo
-import threading
 import gobject
 import Frame
 import math
@@ -36,9 +35,7 @@ class App(gtk.Window):
                max_num_frames=None,
                flip_y=False,
                title = 'Euv'):
-    gobject.threads_init()
-    gtk.gdk.threads_init()
-
+               
     if size is None:
       size= (800,600)
     self.view_port_center = view_port_center
@@ -271,20 +268,6 @@ class App(gtk.Window):
           cr.restore()
 
 class Viewer:
-  class MyThread(threading.Thread):
-    """The thread.
-    """
-    def __init__(self, app):
-      super(Viewer.MyThread,self).__init__()
-      self.app=app
-  
-    def run(self):
-      """Show application and run gtk.main"""
-      self.app.show_all()
-      gtk.threads_enter()
-      gtk.main()
-      gtk.threads_leave()
-
   def __init__(self,
                size=None,
                view_port_center=(0,0),
@@ -293,20 +276,18 @@ class Viewer:
                max_num_frames=None,
                flip_y=False):
     # init gtk
-    # Start the gtk application in a different thread
+    # Start the gtk application
     self.app=App(size=size,
                  view_port_center=view_port_center,
                  view_port_width=view_port_width,
                  recording=recording,
                  max_num_frames=max_num_frames,
                  flip_y = flip_y)
-    self.t = Viewer.MyThread(self.app)
-    self.t.start()
     self.frames = []
+    self.app.show_all()
 
   def wait(self):
     self.app.set_current_frame(0)
-    self.t.join()
 
   def user_break(self):
     """Whether the user has quit the application"""
