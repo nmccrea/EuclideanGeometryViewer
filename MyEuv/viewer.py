@@ -3,7 +3,7 @@
 import pygtk
 import gtk
 
-from math import *
+from painter import *
 
 class Viewer:
   
@@ -18,12 +18,14 @@ class Viewer:
     self.layout_box = gtk.VBox()
     self.window.add( self.layout_box )
     
-    # initialize the drawing drawing_area
+    # initialize the drawing_area
     self.drawing_area = gtk.DrawingArea()
     self.drawing_area.set_size_request( 800, 800 )
     self.drawing_area.connect( "expose_event", self.expose_event )
     self.layout_box.pack_start( self.drawing_area )
     
+    # initialize the painter
+    self.painter = Painter( self.drawing_area )
     
     
     
@@ -39,25 +41,7 @@ class Viewer:
     
     
   def expose_event( self, widget, event ):
-    
-    
-    print "\n\nI'M EXPOSING MYSELF!\n\n"
-    
-    cr = widget.window.cairo_create()
-    
-    
-    
-    cr.set_source_rgb(0, 0, 0)
-    cr.new_path()
-    cr.move_to( 400, 400 )
-    n = 10
-    r = 50
-    for p in range( n+1 ):
-      theta = ( 2 * pi * p ) / n
-      x = ( r * cos( theta ) ) + 400
-      y = ( r * sin( theta ) ) + 400
-      cr.line_to( x, y )
-    cr.fill()
+    self.painter.draw_frame( [] )
     
     
   def delete_event( self, widget, event ):
@@ -66,7 +50,6 @@ class Viewer:
     
     
 def main():
-  print "\n\nHELLO\n\n"
   v = Viewer()
   gtk.main()
   
