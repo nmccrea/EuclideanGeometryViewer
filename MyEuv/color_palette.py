@@ -755,8 +755,12 @@ color_table = {
   "lightgreen" : ( 144, 238, 144 )
 }
 
-class ColorPalette:    
+class ColorPalette:
+  
   @classmethod
-  def set_color( cls, cairo_context, color_string ):
+  def set_color( cls, cairo_context, color_string, alpha ):
     vals = [ c/255.0 for c in color_table[color_string] ]
-    cairo_context.set_source_rgb( vals[0], vals[1], vals[2] )
+    if alpha:
+      cairo_context.set_source_rgba( vals[0], vals[1], vals[2], alpha )
+    else:
+      cairo_context.set_source_rgb( vals[0], vals[1], vals[2] )

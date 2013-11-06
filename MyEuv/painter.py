@@ -8,9 +8,25 @@ class Painter:
   def __init__( self, drawing_area ):
     self.drawing_area = drawing_area
     
+    
   def draw_frame( self, frame ):
     context = self.drawing_area.window.cairo_create()
+    self.draw_circle( context, (400,200), 25, "purple" )
     
+    
+  def draw_circle( self, context,
+                   pos, radius,
+                   color, alpha=None ):
+    self.set_color( context, color, alpha )
+    context.arc( pos[0], pos[1], radius, 0, 2.0 * pi )
+    context.fill()
+    
+    
+  def draw_polygons( self, context,
+                    polygons,
+                    color, alpha=None ):
+                    
+    # TODO: replace
     self.set_color( context, "blue" )
     context.new_path()
     context.move_to( 400, 400 )
@@ -23,14 +39,6 @@ class Painter:
       context.line_to( x, y )
     context.fill()
     
-    self.draw_circle( context, (400, 200), 25, "purple" )
     
-  def draw_circle( self, context,
-                   pos, radius, color ):
-                    
-    self.set_color( context, color )
-    context.arc( pos[0], pos[1], radius, 0, 2.0 * pi)
-    context.fill()
-    
-  def set_color( self, cairo_context, color_string ):
-    ColorPalette.set_color( cairo_context, color_string )
+  def set_color( self, cairo_context, color_string, alpha ):
+    ColorPalette.set_color( cairo_context, color_string, alpha )
