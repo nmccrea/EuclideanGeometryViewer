@@ -12,7 +12,11 @@ class World:
     self.circle_rad = 5
     self.polygon_n = 4
     self.polygon = [ [  30 * cos( t * 2 * pi / self.polygon_n ) + 300,
-                        20 * sin( t * 2 * pi / self.polygon_n ) + 500 ]    for t in range( self.polygon_n ) ]
+                        20 * sin( t * 2 * pi / self.polygon_n ) + 500 ]     for t in range( self.polygon_n ) ]
+    self.line_n = 20
+    self.linewidth = 4
+    self.line = [ [ 20 * t + 450,
+                    35 * cos( 2 * t * 2 * pi / self.line_n ) + 600 ]        for t in range( self.line_n ) ]
     
     
   def step( self ):
@@ -22,6 +26,9 @@ class World:
     
     self.polygon = [ [  point[0] - 2 * cos( self.current_time ),
                         point[1] - 3 * sin( self.current_time )]    for point in self.polygon ]
+                        
+    self.line = [ [ point[0] + sin( self.current_time ),
+                    point[1] - sin( self.current_time ) ]    for point in self.line ]
     
     # increment the current time
     self.current_time += self.period
@@ -53,6 +60,12 @@ class WorldView():
     self.current_frame.add_polygons( [ self.world.polygon ],
                                      color = 'red',
                                      alpha = 1.0 )
+                                     
+    # draw the simulated line
+    self.current_frame.add_lines( [ self.world.line ],
+                                  self.world.linewidth,
+                                  color = 'black',
+                                  alpha = 1.0 )
     
     # cycle the frame
     self.viewer.add_frame( self.current_frame )

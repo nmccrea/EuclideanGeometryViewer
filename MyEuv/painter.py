@@ -25,10 +25,14 @@ class Painter:
                             component['polygons'],
                             component['color'],
                             component['alpha'] )
-    
-    
-    
-    
+      elif component['type'] == 'lines':
+        self.draw_lines( context,
+                         component['lines'],
+                         component['linewidth'],
+                         component['color'],
+                         component['alpha'] )
+                            
+                            
   def draw_circle( self, context,
                    pos, radius,
                    color, alpha ):
@@ -47,7 +51,20 @@ class Painter:
       for point in polygon[1:]:
         context.line_to( *point )
       context.fill()
-    
-    
+      
+      
+  def draw_lines( self, context,
+                  lines, linewidth,
+                  color, alpha ):
+    self.set_color( context, color, alpha )
+    context.set_line_width( linewidth )
+    for line in lines:
+      context.new_path()
+      context.move_to( *line[0] )
+      for point in line[1:]:
+        context.line_to( *point )
+      context.stroke()
+      
+      
   def set_color( self, cairo_context, color_string, alpha ):
     ColorPalette.dab( cairo_context, color_string, alpha )

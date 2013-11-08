@@ -9,6 +9,7 @@ class Frame:
   def __init__( self ):
     self.draw_list = []
     
+    
   def add_circle( self,
                   pos, radius,
                   color, alpha=None ):
@@ -20,6 +21,7 @@ class Frame:
       'alpha':  alpha
     })
     
+    
   def add_polygons( self,
                     polygons,
                     color, alpha=None ):
@@ -28,4 +30,16 @@ class Frame:
       'polygons': polygons,
       'color':    color,
       'alpha':    alpha
+    })
+    
+    
+  def add_lines( self,
+                 lines, linewidth,
+                 color, alpha=None ):
+    self.draw_list.append({
+      'type':       'lines',
+      'lines':      lines,
+      'linewidth':  linewidth,
+      'color':      color,
+      'alpha':      alpha
     })
