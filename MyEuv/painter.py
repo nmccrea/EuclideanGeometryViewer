@@ -20,6 +20,11 @@ class Painter:
                           component['radius'],
                           component['color'],
                           component['alpha'] )
+      elif component['type'] == 'polygons':
+        self.draw_polygons( context,
+                            component['polygons'],
+                            component['color'],
+                            component['alpha'] )
     
     
     
@@ -33,21 +38,15 @@ class Painter:
     
     
   def draw_polygons( self, context,
-                    polygons,
-                    color, alpha ):
-                    
-    # TODO: replace
-    self.set_color( context, "blue" )
-    context.new_path()
-    context.move_to( 400, 400 )
-    n = 4
-    r = 20
-    for p in range( n+1 ):
-      theta = ( 2 * pi * p ) / n
-      x = ( r * cos( theta ) ) + 400
-      y = ( r * sin( theta ) ) + 400
-      context.line_to( x, y )
-    context.fill()
+                     polygons,
+                     color, alpha ):
+    self.set_color( context, color, alpha )
+    for polygon in polygons:
+      context.new_path()
+      context.move_to( *polygon[0] )
+      for point in polygon[1:]:
+        context.line_to( *point )
+      context.fill()
     
     
   def set_color( self, cairo_context, color_string, alpha ):

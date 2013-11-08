@@ -8,13 +8,20 @@ class World:
     self.period = period_millis / 1000.0 # seconds
     
     # simulated values
-    self.pos = [400, 400]
-    self.rad = 5
+    self.circle_pos = [400, 400]
+    self.circle_rad = 5
+    self.polygon_n = 4
+    self.polygon = [ [  30 * cos( t * 2 * pi / self.polygon_n ) + 300,
+                        20 * sin( t * 2 * pi / self.polygon_n ) + 500 ]    for t in range( self.polygon_n ) ]
+    
     
   def step( self ):
-    self.pos[0] += cos( self.current_time )
-    self.pos[1] += sin( self.current_time )
-    self.rad += cos( 2.0 * self.current_time )
+    self.circle_pos[0] += cos( self.current_time )
+    self.circle_pos[1] += sin( self.current_time )
+    self.circle_rad += cos( 2.0 * self.current_time )
+    
+    self.polygon = [ [  point[0] - 2 * cos( self.current_time ),
+                        point[1] - 3 * sin( self.current_time )]    for point in self.polygon ]
     
     # increment the current time
     self.current_time += self.period
@@ -37,10 +44,15 @@ class WorldView():
     
   def render_frame( self ):
     # draw the simulated circle
-    self.current_frame.add_circle(  self.world.pos,
-                                    self.world.rad,
-                                    color = 'blue',
-                                    alpha = 1.0 )
+    self.current_frame.add_circle( self.world.circle_pos,
+                                   self.world.circle_rad,
+                                   color = 'blue',
+                                   alpha = 1.0 )
+                                    
+    # draw the simulated polygon
+    self.current_frame.add_polygons( [ self.world.polygon ],
+                                     color = 'red',
+                                     alpha = 1.0 )
     
     # cycle the frame
     self.viewer.add_frame( self.current_frame )

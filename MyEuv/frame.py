@@ -19,3 +19,13 @@ class Frame:
       'color':  color,
       'alpha':  alpha
     })
+    
+  def add_polygons( self,
+                    polygons,
+                    color, alpha=None ):
+    self.draw_list.append({
+      'type':     'polygons',
+      'polygons': polygons,
+      'color':    color,
+      'alpha':    alpha
+    })
