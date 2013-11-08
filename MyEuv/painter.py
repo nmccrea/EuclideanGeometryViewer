@@ -51,4 +51,4 @@ class Painter:
     
     
   def set_color( self, cairo_context, color_string, alpha ):
-    ColorPalette.set_color( cairo_context, color_string, alpha )
+    ColorPalette.dab( cairo_context, color_string, alpha )

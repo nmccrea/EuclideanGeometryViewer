@@ -758,7 +758,7 @@ color_table = {
 class ColorPalette:
   
   @classmethod
-  def set_color( cls, cairo_context, color_string, alpha ):
+  def dab( cls, cairo_context, color_string, alpha ):
     vals = [ c/255.0 for c in color_table[color_string] ]
     if alpha:
       cairo_context.set_source_rgba( vals[0], vals[1], vals[2], alpha )
