@@ -11,12 +11,22 @@ class Painter:
     
   def draw_frame( self, frame ):
     context = self.drawing_area.window.cairo_create()
-    self.draw_circle( context, (400,200), 25, "purple" )
+    
+    draw_list = frame.draw_list
+    for component in draw_list:
+      if component['type'] == 'circle':
+        self.draw_circle( context,
+                          component['pos'],
+                          component['radius'],
+                          component['color'],
+                          component['alpha'] )
+    
+    
     
     
   def draw_circle( self, context,
                    pos, radius,
-                   color, alpha=None ):
+                   color, alpha ):
     self.set_color( context, color, alpha )
     context.arc( pos[0], pos[1], radius, 0, 2.0 * pi )
     context.fill()
@@ -24,7 +34,7 @@ class Painter:
     
   def draw_polygons( self, context,
                     polygons,
-                    color, alpha=None ):
+                    color, alpha ):
                     
     # TODO: replace
     self.set_color( context, "blue" )
